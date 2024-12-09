@@ -9,7 +9,7 @@ const server = http.createServer((req, res) => {
     const url = req.url;
     const myUrl = new URL(url, `http://${req.headers.host}`);
     const pathname = myUrl.pathname;
-    console.log(pathname);
+
     if (url === '/' || url === '/home') {
         res.end(fsc('index'));
     } else if(pathname === '/product') {
