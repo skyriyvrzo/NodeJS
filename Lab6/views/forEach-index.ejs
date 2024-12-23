@@ -8,14 +8,25 @@
     <title>Document</title>
 </head>
 <body style="background: black; color: white">
-    <h1>Hello EJS Template Engine.</h1>
-    <h2>
-        <% students.forEach(std => { %>
-            ID: <%= std.id%><br>
-            Name: <%= std.name%><br>
-            GPA: <%= std.gpa%><br>
-            <hr>
-        <% }) %>
-    </h2>
+<h1>Hello EJS Template Engine.</h1>
+<h2>
+    <% students.forEach(std => { %>
+        ID: <%= std.id %><br>
+        Name: <%= std.name %><br>
+        GPA: <%= std.gpa %><br>
+        <% if(std.gpa >= 3.5) { %>
+            Excellent GPA
+        <% } else if(std.gpa >= 3.0) { %>
+            Very Good GPA
+        <% } else if(std.gpa > 2.5) { %>
+            Good GPA
+        <% } else if(std.gpa > 2.0) { %>
+            Average GPA
+        <% } else { %>
+            Poor GPA
+        <% } %><br>
+        <hr>
+    <% }) %>
+</h2>
 </body>
 </html>

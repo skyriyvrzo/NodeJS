@@ -30,10 +30,23 @@ const path = require('path');
 
 router.get('/', (req, res) => {
     fs.readFile(path.join(__dirname, '../public/data/products.json'), 'utf8', (err, data) => {
-        if(err) throw err
+        if (err) throw err
         const products = JSON.parse(data);
         // console.log(products);
         res.render('index.ejs', {products: products})
     });
 });
+
+router.get('/students', (req, res) => {
+    const students = [
+        {id: "6614110014", name: "Thewa1 Laokasikan", gpa: 2.5},
+        {id: "6614110015", name: "Thewa2 Laokasikan", gpa: 3.0},
+        {id: "6614110016", name: "Thewa3 Laokasikan", gpa: 3.5}
+    ]
+
+
+    res.render('forEach-index.ejs', {
+        students
+    });
+})
 module.exports = router;
