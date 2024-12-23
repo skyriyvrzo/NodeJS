@@ -19,13 +19,13 @@
                 <% products.forEach(p => { %>
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
-                            <a href="<%= p.link%>"><img class="card-img-top" src="<%= p.image%>" alt="" /></a>
+                            <a href="<%= p.link%>"><img class="card-img-top" src="./images/products/<%=p.image%>" alt="" /></a>
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    <a href="product1.html">กระเป๋า</a>
+                                    <a href="<%= p.link%>"><%= p.name%></a>
                                 </h4>
-                                <h5>ราคา 500 บาท</h5>
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt reprehenderit ea iure, rerum debitis ab voluptate delectus doloribus</p>
+                                <h5>ราคา <%= p.price%> บาท</h5>
+                                <p class="card-text"><%= p.detail%></p>
                             </div>
                         </div>
                     </div>
