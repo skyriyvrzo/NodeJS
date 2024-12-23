@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Notebook",
+        "detail": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt reprehenderit ea iure, rerum debitis ab voluptate delectus doloribus",
+        "price": 25000,
+        "link": "product1.html",
+        "image": "product1.png"
+    },
+    {
+        "id": 2,
+        "name": "Shirt",
+        "detail": "Praesentium deleniti facere temporibus quia consequatur dolorem.",
+        "price": 1500,
+        "link": "product2.html",
+        "image": "product2.png"
+    },
+    {
+        "id": 3,
+        "name": "Earphones",
+        "detail": "Aliquid magni natus omnis dolorum voluptatem distinctio.",
+        "price": 5500,
+        "link": "product3.html",
+        "image": "product3.png"
+    }
+]
