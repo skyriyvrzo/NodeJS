@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "โน๊ตบุ๊ค",
+    "price": "25500",
+    "image": "images/products/product1.png",
+    "description": "Notebook"
+  },
+  {
+    "id": 2,
+    "name": "เสื้อผ้า",
+    "price": "2000",
+    "image": "images/products/product2.png",
+    "description": "Clothes"
+  },
+  {
+    "id": 3,
+    "name": "หูฟัง",
+    "price": "1500",
+    "image": "images/products/product3.png",
+    "description": "Earphones"
+  },
+  {
+    "id": 4,
+    "name": "Potato PC",
+    "price": "50",
+    "image": "images/products/product4.jpg",
+    "description": "Potato PC"
+  }
+]

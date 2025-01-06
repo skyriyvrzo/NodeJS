@@ -12,25 +12,22 @@
                         <th>ชื่อสินค้า</th>
                         <th>ราคา</th>
                         <th>รายละเอียด</th>
+                        <th>รูปภาพ</th>
                         <th>ลบ</th>
                         <th>แก้ไข</th>
                     </tr>
                 </thead>
                 <tbody>
+                <% Object.values(products).forEach((p) => {%>
                     <tr>
-                        <td>กระเป๋า</td>
-                        <td>500</td>
-                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, recusandae.</td>
+                        <td><%= p.name%></td>
+                        <td><%= p.price%></td>
+                        <td><%= p.description%></td>
+                        <td><img src="<%= p.image%>" width="64" height="64" alt="" style="display: block; height: auto; margin: 0 auto"></td>
                         <td><button class="btn btn-danger">ลบ</button></td>
                         <td><button class="btn btn-primary">แก้ไข</button></td>
                     </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, recusandae.</td>
-                        <td><button class="btn btn-danger">ลบ</button></td>
-                        <td><button class="btn btn-primary">แก้ไข</button></td>
-                    </tr>
+                <% }) %>
                 </tbody>
             </table>
         </div>
