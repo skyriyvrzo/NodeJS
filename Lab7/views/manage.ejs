@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head.ejs', {title: "การจัดการสินค้า"}) %>
+    <body>
+    <%- include('navbar.ejs') %>
+        <div class="container">
+            <h2>จัดการสินค้า</h2>
+            <p>เพิ่ม ลบ แก้ไขข้อมูลในฐานข้อมูล</p>            
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ชื่อสินค้า</th>
+                        <th>ราคา</th>
+                        <th>รายละเอียด</th>
+                        <th>ลบ</th>
+                        <th>แก้ไข</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>กระเป๋า</td>
+                        <td>500</td>
+                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, recusandae.</td>
+                        <td><button class="btn btn-danger">ลบ</button></td>
+                        <td><button class="btn btn-primary">แก้ไข</button></td>
+                    </tr>
+                    <tr>
+                        <td>Mary</td>
+                        <td>Moe</td>
+                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut, recusandae.</td>
+                        <td><button class="btn btn-danger">ลบ</button></td>
+                        <td><button class="btn btn-primary">แก้ไข</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
