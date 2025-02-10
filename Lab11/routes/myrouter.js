@@ -29,6 +29,10 @@ const Product = require('../models/products');
 //     ]
 
 const title = "ITMI Shop";
+let priceFilter = {
+    min: "",
+    max: ""
+}
 
 // router.get('/', (req, res)=>{
 //     Product.find().exec((err, doc)=>{
@@ -39,9 +43,27 @@ const title = "ITMI Shop";
 router.get("/", async (req, res) => {
     try {
         const products = await Product.find(); // ดึงข้อมูลทั้งหมดจาก DB
-        res.render("index", {products:products, title: title}); // ส่งไปที่ index.ejs
+        res.render("index", {products:products, title: title, priceFilter: priceFilter  }); // ส่งไปที่ index.ejs
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
+    }
+});
+
+router.get('/search', async (req, res) => {
+    try {
+        priceFilter = {
+            min: req.query.min,
+            max: req.query.max
+        }
+
+        const min = priceFilter.min === "" ? 0 : priceFilter.min;
+        const max = priceFilter.max === "" ? Number.MAX_SAFE_INTEGER : priceFilter.max;
+
+        const products = await Product.find({price: {$gte: min, $lte: max}})
+
+        res.render('index', {products: products, title: title, priceFilter: priceFilter })
+    } catch (e) {
+        res.status(500).json({ message: "Server Error", error: e.message });
     }
 });
 
@@ -122,7 +144,8 @@ router.post('/update', async (req, res) => {
         const data = {
             name: req.body.name,
             price: req.body.price,
-            description: req.body.description
+            image: req.body.image,
+            description: req.body.description,
         }
         console.log('ID: ', id)
         console.log('Data: ',data)

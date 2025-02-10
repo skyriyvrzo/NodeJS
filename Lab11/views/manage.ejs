@@ -17,7 +17,8 @@
         
         <div class="container">
             <h2>จัดการสินค้า</h2>
-            <p>เพิ่ม ลบ แก้ไขข้อมูลในฐานข้อมูล</p>            
+            <p>เพิ่ม ลบ แก้ไขข้อมูลในฐานข้อมูล</p>
+            <input type="text" id="searchInput" class="form-control mb-3" placeholder="🔍ค้นหาสินค้า...">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -51,5 +52,22 @@
                 </tbody>
             </table>
         </div>
+        <script>
+            document.getElementById("searchInput").addEventListener("keyup", function () {
+                let filter = this.value.toLowerCase();
+                let rows = document.querySelectorAll("tbody tr");
+
+                rows.forEach(row => {
+                    let name = row.cells[0].textContent.toLowerCase(); // ชื่อสินค้า
+                    let description = row.cells[2].textContent.toLowerCase(); // รายละเอียดสินค้า
+
+                    if (name.includes(filter) || description.includes(filter)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
