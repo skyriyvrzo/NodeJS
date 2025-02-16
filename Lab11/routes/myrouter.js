@@ -139,13 +139,13 @@ router.post('/edit', async (req, res) => {
 });
 
 router.post('/update', upload.single('image'), async (req, res) => {
-
+    console.log(req.body.image)
     try {
         const id = req.body.id;
         const data = {
             name: req.body.name,
             price: req.body.price,
-            image: req.file.filename,
+            image: req.file ? req.file.filename : undefined,
             description: req.body.description,
         }
         // console.log('ID: ', id)
