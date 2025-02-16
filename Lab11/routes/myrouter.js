@@ -138,17 +138,18 @@ router.post('/edit', async (req, res) => {
     }
 });
 
-router.post('/update', async (req, res) => {
+router.post('/update', upload.single('image'), async (req, res) => {
+
     try {
         const id = req.body.id;
         const data = {
             name: req.body.name,
             price: req.body.price,
-            image: req.body.image,
+            image: req.file.filename,
             description: req.body.description,
         }
-        console.log('ID: ', id)
-        console.log('Data: ',data)
+        // console.log('ID: ', id)
+        // console.log('Data: ',data)
 
         await Product.findByIdAndUpdate(id, data, {useFindAndModify: false}).exec()
         await res.redirect('/manage')
