@@ -10,7 +10,7 @@ let productSchema = mongoose.Schema({
 })
 
 // สร้าง Model
-let Product = mongoose.model("products", productSchema)
+let Product = mongoose.model("Product", productSchema)
 
 // ส่งออก Model
 module.exports = Product

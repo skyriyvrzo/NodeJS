@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const connect = require('../config/db')
+const bcrypt = require('bcryptjs')
 
 //เรียกใช้งาน Model
 const Product = require('../models/products');
@@ -123,6 +124,13 @@ router.get("/find", async (req, res) => {
     }
 });
 
+router.get('/register', (req, res) => {
+    res.render('register/regisindex')
+})
+
+router.get('/login', (req, res) => {
+    res.render('login', {message: req.session.message})
+})
 
 router.get('/search', async (req, res) => {
     try {
@@ -138,25 +146,23 @@ router.get('/search', async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
-    }    
-    
+    }
+
 });
 
-
 router.get('/:id', async (req, res)=>{
-    const title = "Product Detail";    
+    const title = "Product Detail";
     try {
         const product_id = req.params.id;
-        product = await Product.findOne({_id: product_id}).exec(); 
+        product = await Product.findOne({_id: product_id}).exec();
 
         //console.log(product);
-        res.render("product", {product:product, title: title}); 
+        res.render("product", {product:product, title: title});
 
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
     }
 })
-
 
 router.post('/edit', async (req, res) => {
     const title = "Edit Product";
@@ -164,26 +170,26 @@ router.post('/edit', async (req, res) => {
         const edit_id = req.body.id;
         //console.log(edit_id);
         product = await Product.findOne({_id: edit_id}).exec();
-        //console.log(product); 
+        //console.log(product);
         res.render('formedit', {product: product, title: title});
 
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
-    }    
+    }
 });
 
-router.post('/update', upload.single("image"), async (req, res) => {    
+router.post('/update', upload.single("image"), async (req, res) => {
     try {
         const id = req.body.id;
-        const data = { 
-            name: req.body.name, 
-            price: req.body.price, 
-            description: req.body.description 
+        const data = {
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description
         };
         if (req.file) {
             data.image = req.file.filename;
         }
-        
+
         // console.log("รหัสสินค้า: ", id);
         // console.log("รายละเอียดสินค้า: ", data);
 
@@ -192,7 +198,7 @@ router.post('/update', upload.single("image"), async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });
-    }    
+    }
 });
 
 router.get('/sales/all', async (req, res) => {
@@ -219,8 +225,60 @@ router.post('/sales/insert', async (req, res) => {
         totalPrice
     })
 
-    await newSale.save
-    res.render('/sales/all')
+    await newSale.save()
+    res.redirect('/sales/all')
+})
+
+router.post('/register', async (req, res) => {
+    const {name, email, phone, password, confirmPassword} = req.body
+
+    if(password !== confirmPassword) {
+        return res.render('register/regisindex', {error: 'Password do not match'})
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const newMember =  new Member({
+            name,
+            email,
+            phone,
+            password: hashedPassword
+        })
+
+        await newMember.save()
+        res.redirect('/')
+
+    } catch (e) {
+        console.error(e)
+        res.render('register/registerindex', {error: 'Error registering user because: ', e})
+    }
+})
+
+router.post('/login', async (req, res) => {
+    const {email, password} = req.body
+    const user = await Member.findOne({email})
+    if(!user || !(await bcrypt.comparePassword(password))) {
+        req.session.message = 'Invalid email or password!'
+        res.redirect('/login')
+    }
+
+    req.session.user = user
+    res.redirect('/dashboard')
+})
+
+router.get('/dashboard', (req, res) => {
+    if(!req.session.user) {
+        return res.redirect('/login')
+    }
+
+    res.render('dashboard', {user : req.session.user})
+})
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/login')
+    })
 })
 
 module.exports = router;
