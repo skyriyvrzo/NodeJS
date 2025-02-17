@@ -10,6 +10,7 @@ const Sale = require('../models/sales')
 
 //เรียกใช้งาน Multer และกำหนด options
 const multer = require('multer')
+const {locals} = require("express/lib/application");
 
 const storage = multer.diskStorage({
     destination:function(req, file, cb){
@@ -132,6 +133,21 @@ router.get('/login', (req, res) => {
     res.render('login', {message: req.session.message})
 })
 
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        global.user = undefined
+        res.redirect('/login')
+    })
+})
+
+router.get('/dashboard', (req, res) => {
+    if(!req.session.user) {
+        return res.redirect('/login')
+    }
+
+    res.render('dashboard', {user : req.session.user})
+})
+
 router.get('/search', async (req, res) => {
     try {
         let minPrice = req.query.min ? parseFloat(req.query.min) : 0;
@@ -149,6 +165,10 @@ router.get('/search', async (req, res) => {
     }
 
 });
+
+router.get('/user', async (req, res) => {
+    res.render('user')
+})
 
 router.get('/:id', async (req, res)=>{
     const title = "Product Detail";
@@ -232,8 +252,14 @@ router.post('/sales/insert', async (req, res) => {
 router.post('/register', async (req, res) => {
     const {name, email, phone, password, confirmPassword} = req.body
 
+    const existingUser = await Member.findOne({ email });
+
+    if (existingUser) {
+        return res.render('register/regisindex', { error: "Email already exists. Try another one.", name, email, phone});
+    }
+
     if(password !== confirmPassword) {
-        return res.render('register/regisindex', {error: 'Password do not match'})
+        return res.render('register/regisindex', {error: 'Password do not match', name, email, phone})
     }
 
     try {
@@ -251,34 +277,20 @@ router.post('/register', async (req, res) => {
 
     } catch (e) {
         console.error(e)
-        res.render('register/registerindex', {error: 'Error registering user because: ', e})
+        res.render('register/regisindex', {error: 'Error registering user because: ', e})
     }
 })
 
 router.post('/login', async (req, res) => {
     const {email, password} = req.body
-    const user = await Member.findOne({email})
-    if(!user || !(await bcrypt.comparePassword(password))) {
+    const user = await Member.findOne({ email })
+    if(!user || !(await user.comparePassword(password))) {
         req.session.message = 'Invalid email or password!'
-        res.redirect('/login')
-    }
-
-    req.session.user = user
-    res.redirect('/dashboard')
-})
-
-router.get('/dashboard', (req, res) => {
-    if(!req.session.user) {
         return res.redirect('/login')
     }
-
-    res.render('dashboard', {user : req.session.user})
-})
-
-router.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/login')
-    })
+    req.session.user = user
+    global.user = user
+    res.redirect('/dashboard')
 })
 
 module.exports = router;

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light bg-dark">
-    <a href="/" class="navbar-brand"><img src="images/home/logo.png"></a>
+    <a href="/" class="navbar-brand"><img src="../images/home/logo.png"></a>
     <ul class="navbar-nav">
         <li class="nav-item dropdown"><a
                 class="nav-link text-light text-uppercase font-weight-bold px-3 dropdown-toggle" href=""
@@ -25,13 +25,16 @@
                                          data-toggle="dropdown">สมาชิก (MEMBERS)</a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="/register">สมัครสมาชิก</a>
+                <a class="dropdown-item" href="/user">จัดการสมาชิก</a>
             </div>
         </li>
 
         <li class="nav-item dropdown"><a class="nav-link text-light text-uppercase font-weight-bold px-3 dropdown-toggle" href=""
                                          data-toggle="dropdown">เข้าสู่ระบบ (LOGIN)</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="/login">Login</a>
+                    <% if(typeof user === 'undefined') { %>
+                        <a class="dropdown-item" href="/login">Login</a>
+                    <% } %>
                 <a class="dropdown-item" href="/logout">Logout</a>
             </div>
         </li>

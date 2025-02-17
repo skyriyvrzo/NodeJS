@@ -13,7 +13,8 @@ app.use(express.urlencoded({extended:false}))
 app.use(session({
     secret: 'secret',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    user: undefined
 }))
 
 app.use(router);

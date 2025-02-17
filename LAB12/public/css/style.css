@@ -167,3 +167,7 @@ select {
     margin-top: 20px; /* ปรับค่าตามที่ต้องการ */
 }
 
+a {
+    color: #4b98ff;
+    text-decoration: none;
+}
