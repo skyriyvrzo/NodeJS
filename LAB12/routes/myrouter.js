@@ -89,6 +89,15 @@ router.get('/delete/:id', async (req, res)=>{
     }
 })
 
+router.get('/user/delete/:id', async (req, res) => {
+    try {
+        await Member.findByIdAndDelete(req.params.id, {useFindAndModify: false}).exec();
+        res.redirect('/login');
+    } catch (e) {
+        res.status(500).json({ message: "Server Error", error: e });
+    }
+})
+
 // 🔹 Route สำหรับค้นหาสินค้าตามตัวกรองที่ผู้ใช้ป้อน
 router.get("/findindex", async (req, res) => {
     res.render('find');
@@ -167,7 +176,11 @@ router.get('/search', async (req, res) => {
 });
 
 router.get('/user', async (req, res) => {
-    res.render('user')
+    if(!global.user) {
+        return res.redirect('login')
+    }
+
+    res.render('user', {user: global.user})
 })
 
 router.get('/:id', async (req, res)=>{
@@ -293,11 +306,55 @@ router.post('/login', async (req, res) => {
     res.redirect('/dashboard')
 })
 
+router.post('/updateuser', async (req, res) => {
+    const {name, email, phone, oldPassword, newPassword, confirmPassword} = req.body
+
+    const user = {
+        name: name,
+        email: email,
+        phone: phone
+    }
+
+    const existingUser = await Member.findOne({ email });
+
+    if (existingUser.email !== global.user.email) {
+        return res.render('user', { error: "Email already exists. Try another one.", user: user});
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, existingUser.password);
+    if (!isMatch) {
+        return res.render('user', { error: "Old password is incorrect.", user });
+    }
+
+    if(newPassword !== confirmPassword) {
+        return res.render('register/regisindex', {error: 'Password do not match', name, email, phone})
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+        await Member.findOneAndUpdate(
+            { email: existingUser.email },
+            {
+                name: name,
+                phone: phone,
+                password: hashedPassword
+            },
+            { new: true }
+        );
+
+        res.redirect('/')
+
+    } catch (e) {
+        console.error(e)
+        res.render('user', {error: 'Error registering user because: ', e})
+    }
+})
+
 module.exports = router;
 
 
         // const savedProduct = await newProduct.save();
-        // res.redirect('/');
+// res.redirect('/');
 
         // const newProduct = new Product({ 
         //     name: req.body.name, 
