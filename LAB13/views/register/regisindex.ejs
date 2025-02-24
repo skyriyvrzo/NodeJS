@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Register</h2>
+
+        <% if (typeof error !== "undefined" ) { %>
+            <p class="error">
+                <%= error %>
+            </p>
+            <% } %>
+
+                <form action="/register" method="POST">
+                    <label>Name:</label>
+                    <input type="text" name="name" required>
+
+                    <label>Email:</label>
+                    <input type="email" name="email" required>
+
+                    <label>Phone:</label>
+                    <input type="text" name="phone" required>
+
+                    <label>Password:</label>
+                    <input type="password" name="password" required>
+
+                    <label>Confirm Password:</label>
+                    <input type="password" name="confirmPassword" required>
+
+                    <button type="submit" onclick="return confirm('ยืนยันข้อมูลการสมัครสมาชิก')">Register</button>
+                    <a href="/" class="btn-cancel">กลับหน้าแรก</a>
+                </form>
+
+                <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+</body>
+
+</html>

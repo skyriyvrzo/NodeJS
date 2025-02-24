@@ -1,0 +1,21 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.getElementById('form-horizontal').addEventListener('submit', async (e) => {
+            e.preventDefault()
+
+            const name = document.getElementById('name').value
+            const price = document.getElementById('price').value
+            const image = document.getElementById('image').value
+            const description = document.getElementById('description').value
+
+            try {
+                const res = await axios.post('/api/product', {name, price, image, description})
+
+                alert(res.data.message)
+                window.location.href = '/login'
+            } catch (err) {
+                alert(err || "Registration failed")
+            }
+        }
+    );
+</script>

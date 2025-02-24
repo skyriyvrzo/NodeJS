@@ -1,0 +1,46 @@
+<script>
+    import axios from "axios";
+
+    async function fetchProducts(min = null, max = null) {
+        try {
+            let url = '/api/products'
+            if (min !== null && max !== null) {
+                url += `?min=${min}&max=${max}`
+            }
+
+            const res = await axios.get(url)
+            const products = res.data
+            const productsList = document.getElementById('product-list')
+            productsList.innerHTML = ''
+
+            products.forEach(p => {
+                productsList.innerHTML += `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <a href="/${p._id}">
+                            <img class="card-img-top img-thumbnail" src="./images/products/${p.image}" alt="${p.name}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/${p._id}" class="text-dark">${p.name}</a>
+                            </h5>
+                            <p class="card-text"><strong>ราคา:</strong> ${p.price} THB</p>
+                            <p class="card-text">${p.description}</p>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        } catch (e) {
+            console.error('Error fetching products:', e);
+        }
+    }
+
+    document.getElementById("searchForm").addEventListener("submit", (e) => {
+        e.preventDefault()
+        const min = document.getElementById('minPrice').value || null;
+        const max = document.getElementById('maxPrice').value || null;
+        fetchProducts(min, max);
+    });
+
+    fetchProducts();
+</script>
