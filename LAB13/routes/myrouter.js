@@ -60,14 +60,13 @@ router.get('/manage', async (req, res) => {
 })
 
 router.post('/insert', upload.single("image"), async (req, res) => {
-    //console.log(req.file);
+    // console.log(req.body);
     try {
         // บันทึกข้อมูลสินค้า
         const newProduct = new Product({
             name: req.body.name,
             price: req.body.price,
             image: req.file.filename,
-
             description: req.body.description
         });
         const savedProduct = await newProduct.save();
@@ -249,7 +248,20 @@ router.post('/api/register', async (req, res) => {
 })
 
 router.post('/api/product', upload.single("image"), async (req, res) => {
-    
+    console.log(req.body)
+    try {
+        const newProduct = new Product({
+            name: req.body.name,
+            price: req.body.price,
+            image: req.file.filename,
+
+            description: req.body.description
+        });
+        await newProduct.save();
+        res.status(201).json({message: "Product added"});
+    } catch (error) {
+        res.status(500).json({message: "Server Error", error: error.message});
+    }
 })
 
 // 📌 เพิ่มข้อมูลการขาย
