@@ -27,7 +27,7 @@
             });
             alert(res.data.message);
         } catch (err) {
-            alert(err.response?.data?.message || "Upload failed");
+            alert(err || "Upload failed");
         }
     });
 </script>

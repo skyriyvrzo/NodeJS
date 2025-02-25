@@ -248,7 +248,7 @@ router.post('/api/register', async (req, res) => {
 })
 
 router.post('/api/product', upload.single("image"), async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     try {
         const newProduct = new Product({
             name: req.body.name,
