@@ -1,0 +1,48 @@
+<script>
+    
+    async function fetchProducts(min = null, max = null) {
+        try {
+            let url = "/api/products";
+            if (min !== null && max !== null) {
+                url += `?min=${min}&max=${max}`;
+            }
+
+            const response = await axios.get(url);
+            const products = response.data;
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = ""; // เคลียร์สินค้าก่อนโหลดใหม่
+
+            products.forEach(item => {
+                productList.innerHTML += `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <a href="/${item._id}">
+                            <img class="card-img-top img-thumbnail" src="./images/products/${item.image}" alt="${item.name}">
+                        </a>
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="/${item._id}" class="text-dark">${item.name}</a>
+                            </h5>
+                            <p class="card-text"><strong>ราคา:</strong> ${item.price} THB</p>
+                            <p class="card-text">${item.description}</p>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        }
+    }
+
+    document.getElementById("searchForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const min = document.getElementById("minPrice").value || null;
+        const max = document.getElementById("maxPrice").value || null;
+        fetchProducts(min, max);
+    });
+
+    // โหลดสินค้าตอนเปิดหน้า
+    fetchProducts();
+</script>
+

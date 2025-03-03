@@ -1,0 +1,75 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        async function authenticateAndFetchProducts() {
+            try {
+                // 🔑 ส่ง email และ password ไปขอ Token
+                const authResponse = await axios.post("/api/authen", {
+                    email: "user1@gmail.com",
+                    password: "1234567"
+                });
+
+                const token = authResponse.data.token;
+                localStorage.setItem("token", token);
+                console.log("✅ รับ Token สำเร็จ:", token);
+
+                // 🚀 ใช้ Token ไปดึงข้อมูลสินค้า
+                fetchProducts();
+            } catch (error) {
+                console.error("❌ การยืนยันตัวตนล้มเหลว:", error.response?.data?.message || error.message);
+            }
+        }
+
+        async function fetchProducts(min = null, max = null) {
+            try {
+                let url = "/api/products";
+                if (min !== null && max !== null) {
+                    url += `?min=${min}&max=${max}`;
+                }
+
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.warn("⚠️ ไม่มี Token, เริ่มกระบวนการยืนยันตัวตนใหม่");
+                    authenticateAndFetchProducts();
+                    return;
+                }
+
+                const response = await axios.get(url, {
+                    headers: { Authorization: token }
+                });
+
+                const products = response.data;
+                const productList = document.getElementById("product-list");
+                productList.innerHTML = "";
+
+                products.forEach(item => {
+                    productList.innerHTML += `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card">
+                            <a href="/${item._id}">
+                                <img class="card-img-top img-thumbnail" src="./images/products/${item.image}" alt="${item.name}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="/${item._id}" class="text-dark">${item.name}</a>
+                                </h5>
+                                <p class="card-text"><strong>ราคา:</strong> ${item.price} THB</p>
+                                <p class="card-text">${item.description}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+            } catch (error) {
+                console.error("❌ ไม่สามารถดึงข้อมูลสินค้า:", error.response?.data?.message || error.message);
+            }
+        }
+
+        document.getElementById("searchForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const min = document.getElementById("minPrice").value || null;
+            const max = document.getElementById("maxPrice").value || null;
+            fetchProducts(min, max);
+        });
+
+        // 🎯 เริ่มต้นโดยอัตโนมัติ
+        authenticateAndFetchProducts();
+    </script>

@@ -1,0 +1,26 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+        e.preventDefault(); // 📌 ป้องกัน refresh page
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        try {
+            const response = await axios.post("/api/register", {
+                name, email, phone, password, confirmPassword
+            });
+
+            alert(response.data.message); // ✅ Register Success
+            window.location.href = "/login";
+        } catch (error) {
+            alert(error.response.data.message || "Register Failed");
+        }
+    });
+</script>
+
+
+

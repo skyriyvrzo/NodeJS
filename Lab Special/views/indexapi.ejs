@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title %>
+    </title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <script src="js/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="js/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/all.css" crossorigin="anonymous" />
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+    
+        .search-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    
+        .search-form input {
+            margin-right: 10px;
+        }
+    
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+    
+        .card:hover {
+            transform: scale(1.03);
+        }
+    
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+    
+        .card-body {
+            text-align: center;
+        }
+    
+        .btn-search {
+            background-color: #007bff;
+            color: white;
+        }
+    
+        .btn-search:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('navbar.ejs') %>
+
+        <div class="container mt-4">
+            <!-- 🔎 ฟอร์มค้นหาสินค้า -->
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <form id="searchForm" class="search-form">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="minPrice" placeholder="ราคาต่ำสุด">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" id="maxPrice" placeholder="ราคาสูงสุด">
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button type="submit" class="btn btn-search w-100"><i class="fas fa-search"></i>
+                                    ค้นหา</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 🛍️ แสดงรายการสินค้า -->
+            <div class="row mt-3" id="product-list">
+                <!-- 🛒 สินค้าจะแสดงที่นี่ -->
+            </div>
+        </div>
+
+        <%- include('js/api-product.ejs') %>
+</body>
+
+</html>
